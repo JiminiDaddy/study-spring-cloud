@@ -1,0 +1,21 @@
+server:
+  port: 8761
+
+# https://coe.gitbook.io/guide/service-discovery/eureka 참조
+eureka:
+  client:
+    # Eureka-server를 Registry에 등록할지 여부
+    register-with-eureka: false
+    # Registry에 있는 정보를 가져올지 여부
+    fetch-registry: false
+  server:
+    # Eureka-server 기동 후 Peer-nodes로부터 Instance를 가져올 수 없을 때 대기할 시간(milli-seconds, default: 3000)
+    wait-time-in-ms-when-sync-empty: 0
+  serviceUrl:
+    defaultZone: http://localhost:8761
+
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework.web: WARN
+    com.chpark.msa: DEBUG
