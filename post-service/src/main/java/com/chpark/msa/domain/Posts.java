@@ -2,7 +2,6 @@ package com.chpark.msa.domain;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -13,7 +12,6 @@ import javax.persistence.*;
  * Time : 2:54 PM
  */
 
-@NoArgsConstructor
 @Getter
 @Table(name = "posts")
 @Entity
@@ -38,7 +36,7 @@ public class Posts extends BaseTimeEntity {
         this.author = author;
     }
 
-    //protected Posts() { }
+    protected Posts() { }
 
     public void update(String title, String contents) {
         this.title = title;

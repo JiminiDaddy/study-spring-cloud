@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 @SpringBootTest
 class CommentApiTest {
-    private static final String URL = "http://localhost:8080/api/v1/comments";
+    private static final String URL = "http://localhost:8080";
 
     private MockMvc mvc;
 
