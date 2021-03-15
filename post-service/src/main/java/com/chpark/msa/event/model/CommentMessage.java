@@ -1,7 +1,8 @@
 package com.chpark.msa.event.model;
 
-import lombok.Builder;
 import lombok.Getter;
+
+import java.io.Serializable;
 
 /**
  * Created by Choen-hee Park
@@ -11,7 +12,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class CommentMessage {
+public class CommentMessage implements Serializable {
     private String action;
 
     private Long postId;
