@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @Slf4j
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 class CommentApiTest {
     private static final String URL = "http://localhost:8080";
@@ -51,11 +52,13 @@ class CommentApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(requestDto))
         ).andExpect(status().isOk()).andReturn();
-        String response = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        // SpringBoot version변경으로 인해 오류발생해서 잠시 주석처리함. 다시 확인필요
+        //String response = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String response = result.getResponse().getContentAsString();
         CommentResponseDto responseDto = new ObjectMapper().readValue(response, CommentResponseDto.class);
         log.info("postId: <{}>, commentsId:<{}>, author:<{}>, comments:<{}>", responseDto.getPostId(), responseDto.getCommentId(), responseDto.getAuthor(), responseDto.getComments());
-        Assertions.assertEquals(1, responseDto.getPostId());
-        Assertions.assertEquals(1, responseDto.getCommentId());
+        Assertions.assertEquals(1L, responseDto.getPostId().longValue());
+        Assertions.assertEquals(1, responseDto.getCommentId().longValue());
         Assertions.assertEquals("chpark", responseDto.getAuthor());
 
         requestDto = CommentSaveRequestDto.builder().commentId(2L).comments("댓글작성2").password("5678").author("chpark") .build();
@@ -63,11 +66,12 @@ class CommentApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(requestDto))
         ).andExpect(status().isOk()).andReturn();
-        response = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        //response = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        response = result.getResponse().getContentAsString();
         responseDto = new ObjectMapper().readValue(response, CommentResponseDto.class);
         log.info("postId: <{}>, commentsId:<{}>, author:<{}>, comments:<{}>", responseDto.getPostId(), responseDto.getCommentId(), responseDto.getAuthor(), responseDto.getComments());
-        Assertions.assertEquals(1, responseDto.getPostId());
-        Assertions.assertEquals(2, responseDto.getCommentId());
+        Assertions.assertEquals(1, responseDto.getPostId().longValue());
+        Assertions.assertEquals(2, responseDto.getCommentId().longValue());
         Assertions.assertEquals("chpark", responseDto.getAuthor());
     }
 }

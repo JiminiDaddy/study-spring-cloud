@@ -7,8 +7,23 @@ spring:
   application:
     name: comment-service
   cloud:
-    config:
-      enabled: true
+    #config:
+    #  enabled: true
+    stream:
+    # cloud.bindings: 서비스가 스프링 클라우드 스트림의 Message-broker에 메시지를 발행하려는 구성의 시작점
+      bindings:
+        # output: 채널이름, Source.output() 채널에 매핑
+        outboundComment:
+          # 메시지를 넣을 Message-queue의 이름
+          destination: commentSaveTopic
+          # 스프링 클라우드 스트림에 송수신할 메시지 타입의 정보
+          content-type: application/json
+      # 서비스가 Message-bus로 kafka를 사용함
+      kafka:
+        # kafka의 네트워크 위치를 전달
+        binder:
+          brokers: localhost
+
 
 eureka:
   instance:

@@ -7,6 +7,19 @@ spring:
   cloud:
     config:
       enabled: true
+    stream:
+      bindings:
+        # input-channel을 commentSaveTopic 큐에 매핑 (전송자 output-channel의 output.destination과 동일한경우 Queue로부터 메시지를 수신할 수 있다.)
+        inboundComment:
+          destination: commentSaveTopic
+          content-type: application/json
+          # group 프로퍼티는 한번만 처리하는 의미를 보장한다.
+          # 한 서비스가 여러 인스턴스로 동작하는경우, 수신된 메시지는 그룹 내의 하나의 인스턴스로만 전송된다. (중복 수신 방지)
+          group: postGroup
+      kafka:
+        binder:
+          brokers: localhost
+
   profiles:
     active: dev
 

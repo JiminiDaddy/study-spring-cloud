@@ -1,15 +1,12 @@
 package com.chpark.msa.web;
 
-import com.chpark.msa.domain.Posts;
 import com.chpark.msa.service.PostsService;
 import com.chpark.msa.web.dto.PostsResponseDto;
 import com.chpark.msa.web.dto.PostsSaveRequestDto;
 import com.chpark.msa.web.dto.PostsUpdateRequestDto;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.Path;
 import java.util.List;
 
 /**

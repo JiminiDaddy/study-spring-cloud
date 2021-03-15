@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 @Transactional
 @EnableJpaAuditing
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class PostsApiTest {
     private static final String URL = "http://localhost:8080";
@@ -87,8 +89,9 @@ public class PostsApiTest {
 
         MvcResult result = mvc.perform(get(URL + "/" + String.valueOf(id))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-        ).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
-        log.info("Response: <{}>", result.getResponse().getContentAsString(StandardCharsets.UTF_8));
+        ).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).andReturn();
+        //log.info("Response: <{}>", result.getResponse().getContentAsString(StandardCharsets.UTF_8));
+        log.info("Response: <{}>", result.getResponse().getContentAsString());
     }
 
     @DisplayName("수정하기 ")
@@ -102,7 +105,7 @@ public class PostsApiTest {
         MvcResult result = mvc.perform(put(URL + "/" + String.valueOf(id))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(requestDto))
-        ).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
+        ).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).andReturn();
         log.info("Response: <{}>", result.getResponse().getContentAsString());
         String contents = result.getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
@@ -120,7 +123,7 @@ public class PostsApiTest {
 
         MvcResult result = mvc.perform(delete(URL + "/" + String.valueOf(id))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
+        ).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).andReturn();
 
         Assertions.assertEquals(0, postsRepository.count());
     }
