@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+zuul:
+  routes:
+    post-service:
+      path: /api/v1/posts/**
+    comment-service:
+      path: /api/v1/comments/**
+eureka:
+  client:
+    fetch-registry: true
