@@ -4,6 +4,8 @@ import com.chpark.msa.domain.Comment;
 import com.chpark.msa.domain.CommentId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * Created by Choen-hee Park
  * User : chpark
@@ -12,4 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface CommentsRepository extends JpaRepository<Comment, CommentId> {
+    List<Comment> findByCommentId_PostId(Long postId);
 }

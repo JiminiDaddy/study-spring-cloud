@@ -8,6 +8,8 @@ import com.chpark.msa.web.dto.CommentSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Choen-hee Park
@@ -36,5 +38,12 @@ public class CommentService {
         commentMessageSource.publishNewCommentSave(
                 "SAVE", comment);
         return CommentResponseDto.builder().entity(comment).build();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CommentResponseDto> findByPostId(Long postId) {
+        return commentsRepository.findByCommentId_PostId(postId).stream().map(comment ->
+                CommentResponseDto.builder().entity(comment).build()
+        ).collect(Collectors.toList());
     }
 }
